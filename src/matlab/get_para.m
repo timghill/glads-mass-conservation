@@ -24,7 +24,7 @@ pm.file.mesh = 'data/mesh.mat';
 dmesh = load(pm.file.mesh);
 
 %%  Physical parameters
-pp.cond_s = 0.01;
+pp.cond_s = 0.05;
 % pp.omega = 1/2000;
 
 pp.l_bed = 2;
@@ -32,8 +32,8 @@ pp.h_bed = 0.1;
 
 % pp.alpha_s = 3/2;
 % pp.beta_s = 2;
-pp.alpha_s = 5/4;
-pp.beta_s = 3/2;
+pp.alpha_s = 3;
+pp.beta_s = 2;
 pp.omega = 0;
 
 e_v = 1e-4;

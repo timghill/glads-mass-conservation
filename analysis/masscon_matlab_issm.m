@@ -1,7 +1,7 @@
 % Compare mass conservation for matlab and ISSM GlaDS implementations
 
 mat_fname = '../src/matlab/RUN/output.mat';
-issm_fname = '../src/issm/MassCon.mat';
+issm_fname = '../src/issm/MassCon_laminar.mat';
 mesh_fname = '../src/data/mesh.mat';
 
 dmesh = load(mesh_fname);
@@ -140,7 +140,7 @@ edge_plot(gca, dmesh, Q_issm_plot, cmocean('turbid'), [1, 100], 'vmin', 1)
 colorbar(cax2, 'off')
 cax2.Visible = false;
 
-print(fig, 'glads_node_conservation', '-dpng', '-r600')
+% print(fig, 'glads_node_conservation', '-dpng', '-r600')
 
 % figure
 % hold on

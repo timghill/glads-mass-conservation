@@ -31,7 +31,7 @@ if any(steps==2)
     md.hydrology=hydrologyglads();
 
     % PARAMETERS));
-    md.hydrology.sheet_conductivity = 0.01*ones(md.mesh.numberofvertices, 1);
+    md.hydrology.sheet_conductivity = 0.05*ones(md.mesh.numberofvertices, 1);
     md.hydrology.cavity_spacing = 2;
     md.hydrology.bump_height = 0.1*ones(md.mesh.numberofvertices, 1);
     md.hydrology.englacial_void_ratio = 1e-4;
@@ -106,5 +106,5 @@ if any(steps==3)
     md.verbose.solution=1;
     md=solve(md,'Transient');
 
-    save('MassCon.mat', 'md')
+    save('MassCon_laminar.mat', 'md')
 end 
