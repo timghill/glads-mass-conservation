@@ -1,7 +1,7 @@
 % Compare mass conservation for matlab and ISSM GlaDS implementations
 
-mat_fname = '../src/matlab/RUN/output.mat';
-issm_fname = '../src/issm/MassCon_laminar.mat';
+mat_fname = '../src/matlab/RUN/output_transition_32.mat';
+issm_fname = '../src/issm/MassCon_transition.mat';
 mesh_fname = '../src/data/mesh.mat';
 
 dmesh = load(mesh_fname);
@@ -161,5 +161,19 @@ ylabel('ISSM')
 axis image
 xlim([0.5e6, 2.5e6])
 ylim([0.5e6, 2.5e6])
+grid on
+plot([0, 1], [0, 1], 'k')
+
+
+figure
+hold on
+scatter(ff_mat, ff_issm)
+xlabel('MATLAB')
+ylabel('ISSM')
+axis image
+% xlim([0.5e6, 2.5e6])
+% ylim([0.5e6, 2.5e6])
+xlim([0, 1])
+ylim([0, 1])
 grid on
 plot([0, 1], [0, 1], 'k')

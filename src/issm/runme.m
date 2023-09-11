@@ -31,15 +31,20 @@ if any(steps==2)
     md.hydrology=hydrologyglads();
 
     % PARAMETERS));
-    md.hydrology.sheet_conductivity = 0.05*ones(md.mesh.numberofvertices, 1);
+    md.hydrology.sheet_conductivity = 0.1*ones(md.mesh.numberofvertices, 1);
     md.hydrology.cavity_spacing = 2;
     md.hydrology.bump_height = 0.1*ones(md.mesh.numberofvertices, 1);
     md.hydrology.englacial_void_ratio = 1e-4;
-%     md.hydrology.omega = 1/2000;
+    md.hydrology.omega = 1/2000;
+
+    md.hydrology.sheet_alpha = 3./2.;
+    md.hydrology.sheet_beta = 1.5;
 
     % Allow channels and set channel conductivity
     md.hydrology.ischannels = 1;
     md.hydrology.channel_conductivity = 0.1;
+    md.hydrology.channel_alpha = 1.25;
+    md.hydrology.channel_beta = 1.5;
 
     % INITIAL CONDITIONS
 
@@ -106,5 +111,5 @@ if any(steps==3)
     md.verbose.solution=1;
     md=solve(md,'Transient');
 
-    save('MassCon_laminar.mat', 'md')
+%     save('MassCon_transition_new.mat', 'md')
 end 

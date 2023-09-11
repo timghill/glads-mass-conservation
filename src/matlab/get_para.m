@@ -15,7 +15,7 @@ pm.verbosity = 10;   % Lots of output details
 
 %% Model output directories
 pm.dir.model_save = ['./', 'RUN', '/'];
-pm.save_filename = [pm.dir.model_save, 'output.mat'];
+pm.save_filename = [pm.dir.model_save, 'output_transition_32.mat'];
 pm.save_filename_root = '';
 pm.save_index_file = 0;
 
@@ -24,17 +24,29 @@ pm.file.mesh = 'data/mesh.mat';
 dmesh = load(pm.file.mesh);
 
 %%  Physical parameters
-pp.cond_s = 0.05;
 % pp.omega = 1/2000;
 
 pp.l_bed = 2;
 pp.h_bed = 0.1;
 
+pp.cond_s = 0.1;
+pp.alpha_s = 3/2;
+pp.beta_s = 2;
+pp.omega = 1/2000;
+
 % pp.alpha_s = 3/2;
 % pp.beta_s = 2;
-pp.alpha_s = 3;
-pp.beta_s = 2;
-pp.omega = 0;
+% pp.cond_s = 0.05;
+% pp.alpha_s = 3;
+% pp.beta_s = 2;
+
+% pp.cond_s = 0.01;
+% pp.alpha_s = 5.0/4.0;
+% pp.beta_s = 3.0/2.0;
+
+% pp.cond_s = 0.5;
+% pp.alpha_s = 3;
+% pp.beta_s = 3./2.;
 
 e_v = 1e-4;
 pin.e_v = make_anon_fn('@(xy) double(0*xy(:,1) + e_v)',e_v);
@@ -54,7 +66,7 @@ pp.creep_const_s_soft = pp.creep_const_s; % Applied when N<0
 pp.flags.max_S = 500;
 
 op = {'freeze-on', 'freeze-melt', 'none'};
-pp.flags.include_sheet_diss_press = op{3}; % if true, allows freezing shut of the sheet on reverse slopes
+pp.flags.include_sheet_diss_press = op{1}; % if true, allows freezing shut of the sheet on reverse slopes
 
 
 pp.float_frac = 0; % used below for BC
