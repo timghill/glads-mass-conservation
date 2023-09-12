@@ -1,7 +1,7 @@
 % Compare mass conservation for matlab and ISSM GlaDS implementations
 
 mat_fname = '../src/matlab/RUN/output_transition_32.mat';
-issm_fname = '../src/issm/MassCon_transition.mat';
+issm_fname = '../src/issm/MassCon_transition_new.mat';
 mesh_fname = '../src/data/mesh.mat';
 
 dmesh = load(mesh_fname);
