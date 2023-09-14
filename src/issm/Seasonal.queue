@@ -1,0 +1,2 @@
+#!/bin/sh
+mpiexec -np 4 /home/tghill/ISSM/trunk//bin/issm.exe TransientSolution /home/tghill/ISSM/trunk//execution/Seasonal-09-14-2023-13-29-36-55156 Seasonal

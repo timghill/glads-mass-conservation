@@ -15,25 +15,26 @@ if any(steps==1)
     md.mesh.elements = dmesh.tri.connect;
     md = meshconvert(md,md.mesh.elements,md.mesh.x,md.mesh.y);
 
-    save('MassCon.mesh.mat', 'md')
+    save('seasonal.mesh.mat', 'md')
 end 
 
 if any(steps==2) 
     disp('	Step 2: Parameterization');
-    md=loadmodel('MassCon.mesh.mat');
+    md=loadmodel('seasonal.mesh.mat');
 
     md=setmask(md,'','');
 
     % Run parameterization script to set up geometry, velocity, material properties, etc.
-    md=parameterize(md,'MassCon.par');
+    md=parameterize(md,'seasonal.par');
 
     % GLADS HYDROLOGY PARAMETERIZATION
     md.hydrology=hydrologyglads();
 
     % PARAMETERS));
     md.hydrology.sheet_conductivity = 0.05*ones(md.mesh.numberofvertices, 1);
-    md.hydrology.cavity_spacing = 2;
-    md.hydrology.bump_height = 0.1*ones(md.mesh.numberofvertices, 1);
+    md.hydrology.cavity_spacing = 10;
+    md.hydrology.channel_sheet_width = md.hydrology.cavity_spacing;
+    md.hydrology.bump_height = 0.5*ones(md.mesh.numberofvertices, 1);
     md.hydrology.englacial_void_ratio = 1e-4;
     md.hydrology.omega = 1/2000;
 
@@ -74,13 +75,16 @@ if any(steps==2)
     md.basalforcings.geothermalflux = 0;
 
     % Moulin inputs
-    md.hydrology.moulin_input = moulin_inputs(dmesh.tri, 50, 0);
-    save('MassCon.para.mat', 'md')
+    tt_forcing = (0:365)/365;
+    md.hydrology.moulin_input = zeros(dmesh.tri.n_nodes+1, length(tt_forcing));
+    md.hydrology.moulin_input(1:dmesh.tri.n_nodes, :) = moulin_seasonal(dmesh.tri, 50, tt_forcing);
+    md.hydrology.moulin_input(end, :) = tt_forcing;
+    save('seasonal.para.mat', 'md')
 end 
 
 if any(steps==3) 
     disp('	Step 3: Solve!');
-    md=loadmodel('MassCon.para.mat');
+    md=loadmodel('seasonal.para.mat');
 
     % Solve just hydrology
     md.transient=deactivateall(md.transient);
@@ -95,11 +99,12 @@ if any(steps==3)
     md.timestepping.cfl_coefficient = 0.9;  % Must be <1 for stability
     md.timestepping.final_time = 10;
     md.settings.output_frequency = 30;
+    md.timestepping.cycle_forcing = 1;
 
     md.initialization.vel = zeros(md.mesh.numberofvertices, 1) + 30;
     md.initialization.vx = zeros(md.mesh.numberofvertices, 1) - 30;
     md.initialization.vy = zeros(md.mesh.numberofvertices, 1) + 0;
-    md.miscellaneous.name = 'MassCon';
+    md.miscellaneous.name = 'Seasonal';
     md = setmask(md,'','');
 
     % NUMERICAL PARAMETERS
@@ -111,5 +116,5 @@ if any(steps==3)
     md.verbose.solution=1;
     md=solve(md,'Transient');
 
-    save('MassCon_transition_new.mat', 'md')
+    save(fname, 'md')
 end 
