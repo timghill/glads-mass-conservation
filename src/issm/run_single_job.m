@@ -1,4 +1,4 @@
-function run_single_job(filename, k_s, alpha_s, beta_s, omega);
+function run_single_job(filename, k_s, alpha_s, beta_s, omega, k_c);
 steps=[1:3];
 set_paths;
 addpath('../data/')
@@ -44,7 +44,7 @@ if any(steps==2)
 
     % Allow channels and set channel conductivity
     md.hydrology.ischannels = 1;
-    md.hydrology.channel_conductivity = 0.1;
+    md.hydrology.channel_conductivity = k_c;
     md.hydrology.channel_alpha = 1.25;
     md.hydrology.channel_beta = 1.5;
 

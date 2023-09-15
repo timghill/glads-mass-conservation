@@ -1,4 +1,4 @@
-function para = get_para(fname, k_s, alpha, beta, omega)
+function para = get_para(fname, k_s, alpha, beta, omega, k_c)
 % para = get_para_steady(mesh_nr)
 %
 % Get default parameters for SHMIP ice-sheet margin domain run
@@ -37,7 +37,7 @@ pp.omega = omega;
 e_v = 1e-4;
 pin.e_v = make_anon_fn('@(xy) double(0*xy(:,1) + e_v)',e_v);
 
-pp.cond_c = 0.1;
+pp.cond_c = k_c;
 
 const_u_bed = 30/pp.year;
 pin.u_bed = make_anon_fn('@(xy) double(0*xy(:, 1) + const_u_bed)',const_u_bed);

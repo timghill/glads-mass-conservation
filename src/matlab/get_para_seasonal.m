@@ -1,11 +1,11 @@
-function para = get_para_steady(fname, k_s, alpha, beta, omega)
+function para = get_para_steady(fname, k_s, alpha, beta, omega, k_c)
 % para = get_para_steady(config)
 %
 % Set para for steady state run
 
 %% Get defaults and unwrap
 addpath('../')
-para = get_para(fname, k_s, alpha, beta, omega);
+para = get_para(fname, k_s, alpha, beta, omega, k_c);
 [pm, pn, pin, ps, pst, psp, mesh, dmesh, pp, pt, psin, pmd, psmd, pcm] = unwrap_all_para(para);
 
 %% Time
