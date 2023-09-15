@@ -1,4 +1,4 @@
-function para = get_para()
+function para = get_para(fname, k_s, alpha, beta, omega)
 % para = get_para_steady(mesh_nr)
 %
 % Get default parameters for SHMIP ice-sheet margin domain run
@@ -15,7 +15,7 @@ pm.verbosity = 10;   % Lots of output details
 
 %% Model output directories
 pm.dir.model_save = ['./', 'RUN', '/'];
-pm.save_filename = [pm.dir.model_save, 'output_transition_32.mat'];
+pm.save_filename = [pm.dir.model_save, fname];
 pm.save_filename_root = '';
 pm.save_index_file = 0;
 
@@ -24,29 +24,15 @@ pm.file.mesh = 'data/mesh.mat';
 dmesh = load(pm.file.mesh);
 
 %%  Physical parameters
-% pp.omega = 1/2000;
 
-pp.l_bed = 2;
-pp.h_bed = 0.1;
+pp.l_bed = 10;
+pp.h_bed = 0.5;
+pp.l_c = pp.l_bed;
 
-pp.cond_s = 0.1;
-pp.alpha_s = 3/2;
-pp.beta_s = 2;
-pp.omega = 1/2000;
-
-% pp.alpha_s = 3/2;
-% pp.beta_s = 2;
-% pp.cond_s = 0.05;
-% pp.alpha_s = 3;
-% pp.beta_s = 2;
-
-% pp.cond_s = 0.01;
-% pp.alpha_s = 5.0/4.0;
-% pp.beta_s = 3.0/2.0;
-
-% pp.cond_s = 0.5;
-% pp.alpha_s = 3;
-% pp.beta_s = 3./2.;
+pp.cond_s = k_s;
+pp.alpha_s = alpha;
+pp.beta_s = beta;
+pp.omega = omega;
 
 e_v = 1e-4;
 pin.e_v = make_anon_fn('@(xy) double(0*xy(:,1) + e_v)',e_v);

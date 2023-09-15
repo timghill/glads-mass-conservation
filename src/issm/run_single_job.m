@@ -95,11 +95,12 @@ if any(steps==3)
     md.cluster=generic('np',4);
 
     % Define the time stepping scheme
-    md.timestepping=timesteppingadaptive();
-    md.timestepping.time_step_min=86400/md.constants.yts;
-    md.timestepping.cfl_coefficient = 0.9;  % Must be <1 for stability
+    % md.timestepping=timesteppingadaptive();
+    %md.timestepping.time_step_min=86400/md.constants.yts/6;
+    md.timestepping.time_step = 86400/6/md.constants.yts;
+    % md.timestepping.cfl_coefficient = 0.9;  % Must be <1 for stability
     md.timestepping.final_time = 5;
-    md.settings.output_frequency = 10;
+    md.settings.output_frequency = 10*6;
     md.timestepping.cycle_forcing = 1;
 
     md.initialization.vel = zeros(md.mesh.numberofvertices, 1) + 30;

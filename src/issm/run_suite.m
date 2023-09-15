@@ -4,7 +4,7 @@ job_arr = { {"seasonal_001.mat", 0.0095, 5./4., 3./2., 0},
             {"seasonal_004.mat", 0.1, 5./4., 3./2.,  1/2000},
             {"seasonal_005.mat", 0.1, 3./2., 3./2.,  1/2000}};
 
-job_ids = [1, 2, 3, 4, 5];
+job_ids = [2, 3, 4, 5];
 % job_ids = [1];
 for jid=job_ids
     job_paras = job_arr{jid};
