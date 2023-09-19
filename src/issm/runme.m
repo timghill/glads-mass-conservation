@@ -74,6 +74,8 @@ if any(steps==2)
     md.basalforcings.groundedice_melting_rate = 0.05*ones(md.mesh.numberofvertices, 1);
     md.basalforcings.geothermalflux = 0;
 
+    md.materials.mu_water = md.materials.rho_freshwater * 1.793e-6; 
+
     % Moulin inputs
     tt_forcing = (0:365)/365;
     md.hydrology.moulin_input = zeros(dmesh.tri.n_nodes+1, length(tt_forcing));

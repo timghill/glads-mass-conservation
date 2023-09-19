@@ -16,6 +16,7 @@ md.initialization.temperature=(273)*ones(md.mesh.numberofvertices,1);
 md.materials.rheology_n=3.*ones(md.mesh.numberofelements,1);
 md.materials.rho_freshwater = 1e3;
 md.materials.rho_ice = 910;
+md.materials.mu_water = md.materials.rho_freshwater * 1.793e-6; 
 md.constants.g = 9.8;
 
 %Calving

@@ -1,8 +1,8 @@
-cases = [1, 2, 3, 4, 5];
-figname = 'issm_matlab';
+% cases = [1, 2, 3, 4, 5];
+% figname = 'issm_matlab';
 
-% cases = [101, 102, 103, 104, 105];
-% figname = 'issm_matlab_high_ks';
+cases = [101, 102, 103, 104, 105];
+figname = 'issm_matlab_high_ks';
 
 mat_fpattern = '../src/matlab/RUN/seasonal_%03d.mat';
 issm_fpattern = '../src/issm/seasonal_%03d.mat';
