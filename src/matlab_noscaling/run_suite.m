@@ -18,5 +18,5 @@ for jid=job_ids
     alpha_s = job_paras{3}; beta_s = job_paras{4};
     omega = job_paras{5};
     k_c = job_paras{6};
-    run_single_job(fname, k_s, alpha_s, beta_s, omega, k_c);
+    pa = run_single_job(fname, k_s, alpha_s, beta_s, omega, k_c);
 end

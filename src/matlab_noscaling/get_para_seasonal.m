@@ -1,4 +1,4 @@
-function para = get_para_steady(fname, k_s, alpha, beta, omega, k_c)
+function para = get_para_seasonal(fname, k_s, alpha, beta, omega, k_c)
 % para = get_para_steady(config)
 %
 % Set para for steady state run
@@ -15,7 +15,12 @@ pt.out_t = pt.start:10*86400:pt.end;
 addpath(genpath('../data'))
 pin.source_term_s = make_anon_fn('@(xy, time) double(0.05/86400/365 + 0*xy(:, 1));');
 pin.source_term_c = make_anon_fn('@(time) double(moulin_seasonal(dmesh.tri, 50, time./pp.year));', dmesh, pp);
-
+ps
+pp
+psp
+pst
+pn
+para
 %% Nondimensionalize and re-wrap
 [psp, pst, psmd, psin, mesh] = scale_para(pp, pt, pmd, pin, dmesh, ps);
 para = wrap_para(pm, pn, pin, ps, pt, pst, psp, pp, mesh, dmesh, psin, pmd, psmd, pcm);

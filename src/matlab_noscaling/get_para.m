@@ -65,6 +65,8 @@ pn.ts.stepper =  steppers{5};
 st = {'ode15s', 'ode23s', 'ode23t', 'odebim'};  % can also use ode23t, ode23s but ode15s is probbaly best
 pn.ts.ode15s.stepper = st{1};
 
+% pn.ts.ode15s.opts = odeset('AbsTol', 1e-1, 'RelTol', 1e-2);
+
 %% Domain geometry
 pin.bed_elevation = make_anon_fn('@(xy, time) double(bed(xy));');
 pin.ice_thickness = make_anon_fn('@(xy, time) double(thick(xy));');
@@ -92,11 +94,17 @@ ps = set_default_scales(ps, pp, dmesh);
 % for k=1:numel(ps_fields)
 %     ps.(ps_fields{k}) = 1;
 % end
-% 
-% % Trick scaling code to think dmesh is scaled
+
+% Trick scaling code to think dmesh is scaled
 % dmesh.scaled = 1;
 % ps.x_offset = 0;
 % ps.y_offset = 0;
+% ps.x = 0.5*(dmesh.x_extent(2) + dmesh.x_extent(2));
+
+% Return physical constants to their non-dimensional values
+% ps.L_fusion = pp.L_fusion;
+% ps.rho_w = pp.rho_w;
+% ps.rho_i = pp.rho_i;
 
 [psp, pst, psmd, psin, mesh] = scale_para(pp, pt, pmd, pin, dmesh, ps);
 
