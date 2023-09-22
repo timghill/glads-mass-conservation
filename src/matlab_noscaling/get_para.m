@@ -24,7 +24,6 @@ pm.file.mesh = 'data/mesh.mat';
 dmesh = load(pm.file.mesh);
 
 %%  Physical parameters
-
 pp.l_bed = 10;
 pp.h_bed = 0.5;
 pp.l_c = pp.l_bed;
@@ -86,25 +85,67 @@ pin.bc_flux = make_anon_fn('@(xy, time, bmark_edge) double(zeros(sum(~logical(mo
 pin.ic_h = make_anon_fn('@(xy, time) double(0.1*pp.h_bed + 0*xy(:, 1));', pp);
 pin.ic_S =  make_anon_fn('@(xy, time) double(0*xy(:,1));');
 
-%% Nondimensionalize and wrap
+%% Partially nondimensionalize and wrap
 
-% Set all scales to 1 (i.e., don't scale)
-ps = set_default_scales(ps, pp, dmesh);
-% ps_fields = fieldnames(ps);
-% for k=1:numel(ps_fields)
-%     ps.(ps_fields{k}) = 1;
-% end
+% Set scales for physical constants
+ps.rho_w = pp.rho_w;
+ps.rho_i = pp.rho_i;
+ps.L_fusion = pp.L_fusion;
+ps.g_grav = pp.g_grav;
 
-% Trick scaling code to think dmesh is scaled
-% dmesh.scaled = 1;
-% ps.x_offset = 0;
-% ps.y_offset = 0;
-% ps.x = 0.5*(dmesh.x_extent(2) + dmesh.x_extent(2));
+% ps.rho_w = 1;
+% ps.rho_i = 1;
+% ps.L_fusion = 1;
+% ps.g_grav = 1;
 
-% Return physical constants to their non-dimensional values
-% ps.L_fusion = pp.L_fusion;
-% ps.rho_w = pp.rho_w;
-% ps.rho_i = pp.rho_i;
+% No scaling for dependent variables
+ps.phi = 1;
+ps.Q = 1;
+ps.u_bed = 1;
+
+% No scaling for spatial coordinates
+ps.x = 1;
+ps.x_offset = 0; ps.y_offset = 0;
+
+% No scaling for model parameters
+ps.cond_s = 1;
+ps.cond_c = 1;
+ps.l_bed = 1;
+ps.h_bed = 1;
+ps.l_c = 1;
+ps.creep_const_s = 1;
+
+ps.creep_const_c = ps.creep_const_s;
+ps.h = ps.h_bed;
+ps.h_w = ps.h;
+
+% Compute scales for dependent variables (copied from set_default_scales)
+if pp.omega>0
+    % If we are using transition flux parameterization, pp.alpha_s
+    % is interpreted as the flow exponent in the turbulent limit, but
+    % we want to use the flow in the laminar limit to set the scale
+    % for q
+    alpha_scale = 3;
+    beta_scale = 2;
+else
+    % We are using standard flux parameterization, use alpha_s and beta_s
+    % as is
+    alpha_scale = pp.alpha_s;
+    beta_scale = pp.beta_s;
+end
+ps.q = ps.cond_s.*ps.h.^alpha_scale.*(ps.phi/ps.x).^(beta_scale-1); % sheet discharge (m^2/s) [q]
+ps.nu = ps.q;       % kinematic viscosity of water (m2 s-1)
+ps.l_spacing = ps.Q/ps.q; % average channel spacing (m) [l]
+ps.S = ps.h_bed*ps.l_spacing; % channel cross sectional area (m^2) [S]
+ps.S_w = ps.S; % channel water filled cross sectional area (m^2) [S_w]
+ps.z = ps.phi/ps.rho_w/ps.g_grav; % vertical length scale for any elevation (m) [B] [H]
+ps.t = ps.x*ps.h/ps.q; % time scale (s) [t]
+
+%% Input fields scales
+ps.source_term_s = ps.q/ps.x;  % source term sheet (ms^-1) [m]
+ps.source_term_c = ps.Q;  % source term channel (m^3 s^-1) (this happens at the nodes) [Q_s or/and Q_m]
+ps.e_v = ps.rho_w*ps.g_grav*ps.h/ps.phi; % englacial-void-ratio scale
+ps.moulin_area = 1/( ps.phi/ps.rho_w/ps.g_grav/(ps.S*ps.x) ) ; % moulin area scale [A_m]
 
 [psp, pst, psmd, psin, mesh] = scale_para(pp, pt, pmd, pin, dmesh, ps);
 

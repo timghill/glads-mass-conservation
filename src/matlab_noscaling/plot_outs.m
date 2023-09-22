@@ -1,4 +1,4 @@
-outs = load('RUN/seasonal_001_norho.mat');
+outs = load('RUN/seasonal_001_nophys.mat');
 
 dmesh = load('../data/mesh.mat');
 
@@ -10,9 +10,9 @@ patch('Faces', dmesh.tri.connect, 'Vertices', dmesh.tri.nodes, ...
 axis image
 cb = colorbar;
 cb.Label.String = '\phi (MPa)';
-print(f, 'phi_norho', '-dpng', '-r600')
+print(f, 'phi_nophys', '-dpng', '-r600')
 
 f2 = figure;
 plot(mean(outs.phis))
 cmocean('dense')
-print(f2, 'phi_norho_time', '-dpng', '-r600')
+print(f2, 'phi_nophys_time', '-dpng', '-r600')
